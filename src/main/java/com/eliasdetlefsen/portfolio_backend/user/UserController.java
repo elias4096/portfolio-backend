@@ -1,6 +1,5 @@
 package com.eliasdetlefsen.portfolio_backend.user;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +19,7 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public User createUser(@Valid @RequestBody CreateUserRequest request) {
-        return userService.save(request.email(), request.password(), request.role());
+        return userService.createUser(request.email(), request.password(), request.role());
     }
 }
