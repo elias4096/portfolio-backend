@@ -38,8 +38,8 @@ public class User {
     protected User() {
     }
 
-    public User(UUID id, String email, String passwordHash, UserRole role) {
-        this.id = id;
+    public User(String email, String passwordHash, UserRole role) {
+        this.id = UUID.randomUUID();
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;

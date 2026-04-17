@@ -34,7 +34,7 @@ public class UserService {
 
         String passwordHash = passwordEncoder.encode(password);
 
-        User user = new User(UUID.randomUUID(), email, passwordHash, role);
+        User user = new User(email, passwordHash, role);
 
         return userRepository.save(user);
     }
