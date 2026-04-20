@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.eliasdetlefsen.portfolio_backend.exception.InvalidCredentialsExceptions;
 import com.eliasdetlefsen.portfolio_backend.user.UserMeResponse;
 import com.eliasdetlefsen.portfolio_backend.user.UserService;
 

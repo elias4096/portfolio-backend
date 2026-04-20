@@ -6,6 +6,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.eliasdetlefsen.portfolio_backend.exception.EmailAlreadyExistsException;
+import com.eliasdetlefsen.portfolio_backend.exception.UserNotFoundException;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;

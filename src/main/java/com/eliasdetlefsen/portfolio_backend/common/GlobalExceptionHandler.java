@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.eliasdetlefsen.portfolio_backend.auth.InvalidCredentialsExceptions;
-import com.eliasdetlefsen.portfolio_backend.user.EmailAlreadyExistsException;
-import com.eliasdetlefsen.portfolio_backend.user.UserNotFoundException;
+import com.eliasdetlefsen.portfolio_backend.exception.InvalidCredentialsExceptions;
+import com.eliasdetlefsen.portfolio_backend.exception.EmailAlreadyExistsException;
+import com.eliasdetlefsen.portfolio_backend.exception.UserNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

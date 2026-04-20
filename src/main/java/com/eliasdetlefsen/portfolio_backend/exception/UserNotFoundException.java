@@ -1,4 +1,4 @@
-package com.eliasdetlefsen.portfolio_backend.user;
+package com.eliasdetlefsen.portfolio_backend.exception;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String message) {
