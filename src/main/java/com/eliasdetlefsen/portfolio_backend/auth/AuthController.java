@@ -1,5 +1,8 @@
 package com.eliasdetlefsen.portfolio_backend.auth;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,10 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eliasdetlefsen.portfolio_backend.user.UserMeResponse;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = { "http://localhost:5173", "https://bryrmiginte.se" })
 @RequestMapping("/api/auth")
 public class AuthController {
     private final AuthService authService;
@@ -27,7 +31,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@Valid @RequestBody LoginRequest request) {
-        return authService.login(request);
+    public ResponseEntity<Void> login(@Valid @RequestBody LoginRequest request, HttpServletResponse response) {
+        ResponseCookie responseCookie = authService.login(request);
+        response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
+        return ResponseEntity.ok().build();
     }
 }

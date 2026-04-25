@@ -2,6 +2,7 @@ package com.eliasdetlefsen.portfolio_backend.auth;
 
 import java.util.UUID;
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +30,7 @@ public class AuthService {
         return new UserMeResponse(user.getEmail(), user.getRole());
     }
 
-    public LoginResponse login(LoginRequest request) {
+    public ResponseCookie login(LoginRequest request) {
         var user = userService.getUserByEmail(request.email());
 
         if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
@@ -37,6 +38,20 @@ public class AuthService {
         }
 
         String token = jwtService.generateToken(user);
-        return new LoginResponse(token);
+
+        ResponseCookie cookie = ResponseCookie.from("access_token", token)
+                // Prevent JavaScript access.
+                .httpOnly(true)
+                // Todo: change to true here.
+                .secure(false)
+                // Prevent cross-site requests sending cookie.
+                .sameSite("Strict")
+                // Send cookie to all endpoints.
+                .path("/")
+                // Token expiration.
+                .maxAge(60 * 60)
+                .build();
+
+        return cookie;
     }
 }
