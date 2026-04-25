@@ -36,4 +36,11 @@ public class AuthController {
         response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        ResponseCookie responseCookie = authService.logout();
+        response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
+        return ResponseEntity.ok().build();
+    }
 }

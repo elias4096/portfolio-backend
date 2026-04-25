@@ -54,4 +54,17 @@ public class AuthService {
 
         return cookie;
     }
+
+    public ResponseCookie logout() {
+        ResponseCookie cookie = ResponseCookie.from("access_token", "")
+                .httpOnly(true)
+                // Todo: change to true here.
+                .secure(false)
+                .sameSite("Strict")
+                .path("/")
+                .maxAge(0)
+                .build();
+
+        return cookie;
+    }
 }
