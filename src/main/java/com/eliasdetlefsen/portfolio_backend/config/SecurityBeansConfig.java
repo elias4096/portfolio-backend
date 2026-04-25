@@ -25,7 +25,7 @@ public class SecurityBeansConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/projects").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new AuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
 

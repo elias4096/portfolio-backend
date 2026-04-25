@@ -6,12 +6,13 @@ import jakarta.validation.constraints.NotBlank;
 
 public record ProjectResponse(
         @NotBlank UUID id,
-        @NotBlank String title,
-        @NotBlank Integer displayOrder) {
+        @NotBlank Integer displayOrder,
+        @NotBlank String markdown) {
+
     public static ProjectResponse from(Project project) {
         return new ProjectResponse(
                 project.getId(),
-                project.getTitle(),
-                project.getDisplayOrder());
+                project.getDisplayOrder(),
+                project.getMarkdown());
     }
 }

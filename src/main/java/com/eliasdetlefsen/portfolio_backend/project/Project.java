@@ -17,14 +17,11 @@ public class Project {
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
-    @Column(name = "slug", nullable = false, length = 255)
-    private String slug;
-
-    @Column(name = "title", nullable = false, length = 255)
-    private String title;
-
     @Column(name = "display_order", nullable = false)
     private Integer displayOrder;
+
+    @Column(name = "markdown", nullable = false, length = 500)
+    private String markdown;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
@@ -47,27 +44,26 @@ public class Project {
     protected Project() {
     }
 
-    public Project(String title, Integer displayOrder) {
+    public Project(Integer displayOrder, String markdown) {
         this.id = UUID.randomUUID();
-        this.slug = "";
-        this.title = title;
         this.displayOrder = displayOrder;
+        this.markdown = markdown;
     }
 
-    public void update(String title, Integer displayOrder) {
-        this.title = title;
+    public void update(Integer displayOrder, String markdown) {
         this.displayOrder = displayOrder;
+        this.markdown = markdown;
     }
 
     public UUID getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public Integer getDisplayOrder() {
         return displayOrder;
+    }
+
+    public String getMarkdown() {
+        return markdown;
     }
 }

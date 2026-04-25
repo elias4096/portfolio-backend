@@ -17,7 +17,7 @@ public class ProjectService {
     }
 
     public List<ProjectResponse> getAll() {
-        return projectRepository.findAll()
+        return projectRepository.findAllByOrderByDisplayOrderAsc()
                 .stream()
                 .map(ProjectResponse::from)
                 .toList();
@@ -33,8 +33,8 @@ public class ProjectService {
     @PreAuthorize("hasRole('ADMIN')")
     public ProjectResponse create(ProjectRequest request) {
         Project project = new Project(
-                request.title(),
-                request.displayOrder());
+                request.displayOrder(),
+                request.markdown());
 
         return ProjectResponse.from(projectRepository.save(project));
     }
@@ -44,7 +44,7 @@ public class ProjectService {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException("Failed to update, no project with id: " + id));
 
-        project.update(request.title(), request.displayOrder());
+        project.update(request.displayOrder(), request.markdown());
 
         return ProjectResponse.from(projectRepository.save(project));
     }
