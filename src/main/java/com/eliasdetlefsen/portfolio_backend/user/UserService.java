@@ -31,13 +31,12 @@ public class UserService {
 
     @PreAuthorize("hasRole('ADMIN')")
     public User createUser(String email, String password, UserRole role) {
-        userRepository.findByEmail(email)
-                .orElseThrow(() -> new EmailAlreadyExistsException());
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new EmailAlreadyExistsException();
+        }
 
         String passwordHash = passwordEncoder.encode(password);
-
         User user = new User(email, passwordHash, role);
-
         return userRepository.save(user);
     }
 }
