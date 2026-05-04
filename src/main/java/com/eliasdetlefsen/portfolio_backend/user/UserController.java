@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:5173", "https://bryrmiginte.se" })
-@RequestMapping("/api/admin/users")
+@CrossOrigin(origins = { "http://localhost:5173", "https://eliasdetlefsen.se" })
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 

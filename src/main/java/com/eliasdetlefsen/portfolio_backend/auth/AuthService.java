@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.eliasdetlefsen.portfolio_backend.exception.InvalidCredentialsExceptions;
+import com.eliasdetlefsen.portfolio_backend.user.User;
 import com.eliasdetlefsen.portfolio_backend.user.UserMeResponse;
 import com.eliasdetlefsen.portfolio_backend.user.UserService;
 
@@ -26,45 +27,39 @@ public class AuthService {
 
     public UserMeResponse me() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        var user = userService.getUserById(UUID.fromString(authentication.getName()));
+        User user = userService.getUserById(UUID.fromString(authentication.getName()));
         return new UserMeResponse(user.getEmail(), user.getRole());
     }
 
     public ResponseCookie login(LoginRequest request) {
-        var user = userService.getUserByEmail(request.email());
+        User user = userService.getUserByEmail(request.email());
 
         if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
-            throw new InvalidCredentialsExceptions("Invalid password");
+            throw new InvalidCredentialsExceptions();
         }
 
         String token = jwtService.generateToken(user);
 
-        ResponseCookie cookie = ResponseCookie.from("access_token", token)
-                // Prevent JavaScript access.
+        return ResponseCookie.from("access_token", token)
                 .httpOnly(true)
-                // Todo: change to true here.
+                // Todo: change to true.
                 .secure(false)
-                // Prevent cross-site requests sending cookie.
                 .sameSite("Strict")
-                // Send cookie to all endpoints.
                 .path("/")
-                // Token expiration.
                 .maxAge(60 * 60)
                 .build();
-
-        return cookie;
     }
 
     public ResponseCookie logout() {
-        ResponseCookie cookie = ResponseCookie.from("access_token", "")
+        SecurityContextHolder.clearContext();
+
+        return ResponseCookie.from("access_token", "")
                 .httpOnly(true)
-                // Todo: change to true here.
+                // Todo: change to true.
                 .secure(false)
                 .sameSite("Strict")
                 .path("/")
                 .maxAge(0)
                 .build();
-
-        return cookie;
     }
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:5173", "https://bryrmiginte.se" })
+@CrossOrigin(origins = { "http://localhost:5173", "https://eliasdetlefsen.se" })
 @RequestMapping("/api/projects")
 public class ProjectController {
     private final ProjectService projectService;
@@ -41,9 +41,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ProjectResponse update(
-            @PathVariable UUID id,
-            @Valid @RequestBody ProjectRequest request) {
+    public ProjectResponse update(@PathVariable UUID id, @Valid @RequestBody ProjectRequest request) {
         return projectService.update(id, request);
     }
 

@@ -25,7 +25,7 @@ public class ProjectService {
 
     public ProjectResponse getById(UUID id) {
         Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new ProjectNotFoundException("Failed to get, no project with id: " + id));
+                .orElseThrow(() -> new ProjectNotFoundException());
 
         return ProjectResponse.from(project);
     }
@@ -34,7 +34,8 @@ public class ProjectService {
     public ProjectResponse create(ProjectRequest request) {
         Project project = new Project(
                 request.displayOrder(),
-                request.markdown());
+                request.markdown(),
+                request.imageUuid());
 
         return ProjectResponse.from(projectRepository.save(project));
     }
@@ -42,9 +43,9 @@ public class ProjectService {
     @PreAuthorize("hasRole('ADMIN')")
     public ProjectResponse update(UUID id, ProjectRequest request) {
         Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new ProjectNotFoundException("Failed to update, no project with id: " + id));
+                .orElseThrow(() -> new ProjectNotFoundException());
 
-        project.update(request.displayOrder(), request.markdown());
+        project.update(request.displayOrder(), request.markdown(), request.imageUuid());
 
         return ProjectResponse.from(projectRepository.save(project));
     }
@@ -52,7 +53,7 @@ public class ProjectService {
     @PreAuthorize("hasRole('ADMIN')")
     public void delete(UUID id) {
         if (!projectRepository.existsById(id)) {
-            throw new ProjectNotFoundException("Failed to delete, no project with id: " + id);
+            throw new ProjectNotFoundException();
         }
 
         projectRepository.deleteById(id);

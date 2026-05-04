@@ -23,6 +23,9 @@ public class Project {
     @Column(name = "markdown", nullable = false, length = 500)
     private String markdown;
 
+    @Column(name = "image_uuid", nullable = false)
+    private UUID imageUuid;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
@@ -44,15 +47,17 @@ public class Project {
     protected Project() {
     }
 
-    public Project(Integer displayOrder, String markdown) {
+    public Project(Integer displayOrder, String markdown, UUID imageUuid) {
         this.id = UUID.randomUUID();
         this.displayOrder = displayOrder;
         this.markdown = markdown;
+        this.imageUuid = imageUuid;
     }
 
-    public void update(Integer displayOrder, String markdown) {
+    public void update(Integer displayOrder, String markdown, UUID imageUuid) {
         this.displayOrder = displayOrder;
         this.markdown = markdown;
+        this.imageUuid = imageUuid;
     }
 
     public UUID getId() {
@@ -65,5 +70,9 @@ public class Project {
 
     public String getMarkdown() {
         return markdown;
+    }
+
+    public UUID getImageUuid() {
+        return imageUuid;
     }
 }

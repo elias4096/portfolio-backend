@@ -21,19 +21,18 @@ public class UserService {
 
     public User getUserById(UUID id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new UserNotFoundException());
     }
 
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+                .orElseThrow(() -> new UserNotFoundException());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     public User createUser(String email, String password, UserRole role) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new EmailAlreadyExistsException("User with email already exists: " + email);
-        }
+        userRepository.findByEmail(email)
+                .orElseThrow(() -> new EmailAlreadyExistsException());
 
         String passwordHash = passwordEncoder.encode(password);
 
