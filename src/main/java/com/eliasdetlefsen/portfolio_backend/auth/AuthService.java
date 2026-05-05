@@ -2,6 +2,7 @@ package com.eliasdetlefsen.portfolio_backend.auth;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +19,9 @@ public class AuthService {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+
+    @Value("${spring.profiles.active:default}")
+    private String configuration;
 
     public AuthService(UserService userService, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userService = userService;
@@ -41,9 +45,8 @@ public class AuthService {
         String token = jwtService.generateToken(user);
 
         return ResponseCookie.from("access_token", token)
+                .secure(configuration.equals("prod") ? true : false)
                 .httpOnly(true)
-                // Todo: change to true.
-                .secure(false)
                 .sameSite("Strict")
                 .path("/")
                 .maxAge(60 * 60)
@@ -54,9 +57,8 @@ public class AuthService {
         SecurityContextHolder.clearContext();
 
         return ResponseCookie.from("access_token", "")
+                .secure(configuration.equals("prod") ? true : false)
                 .httpOnly(true)
-                // Todo: change to true.
-                .secure(false)
                 .sameSite("Strict")
                 .path("/")
                 .maxAge(0)

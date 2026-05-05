@@ -3,6 +3,9 @@ package com.eliasdetlefsen.portfolio_backend.auth;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +19,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class AuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
+
+    @Value("${spring.profiles.active:default}")
+    private String configuration;
 
     public AuthenticationFilter(JwtService jwtService) {
         this.jwtService = jwtService;
@@ -45,6 +51,16 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception e) {
             SecurityContextHolder.clearContext();
+
+            ResponseCookie cookie = ResponseCookie.from("access_token", "")
+                    .secure(configuration.equals("prod") ? true : false)
+                    .httpOnly(true)
+                    .sameSite("Strict")
+                    .path("/")
+                    .maxAge(0)
+                    .build();
+
+            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         }
 
         filterChain.doFilter(request, response);
