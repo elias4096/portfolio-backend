@@ -54,12 +54,6 @@ public class Project {
         this.imageUuid = imageUuid;
     }
 
-    public void update(Integer displayOrder, String markdown, UUID imageUuid) {
-        this.displayOrder = displayOrder;
-        this.markdown = markdown;
-        this.imageUuid = imageUuid;
-    }
-
     public UUID getId() {
         return id;
     }
@@ -74,5 +68,17 @@ public class Project {
 
     public UUID getImageUuid() {
         return imageUuid;
+    }
+
+    public void setDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
+    public void setMarkdown(String markdown) {
+        this.markdown = markdown;
+    }
+
+    public void setImageUuid(UUID imageUuid) {
+        this.imageUuid = imageUuid;
     }
 }

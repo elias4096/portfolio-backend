@@ -40,6 +40,11 @@ public class ProjectController {
         return projectService.create(request);
     }
 
+    @PostMapping("/reorder")
+    public void reorder(@RequestBody List<ReorderRequest> request) {
+        projectService.reorder(request);
+    }
+
     @PutMapping("/{id}")
     public ProjectResponse update(@PathVariable UUID id, @Valid @RequestBody ProjectRequest request) {
         return projectService.update(id, request);

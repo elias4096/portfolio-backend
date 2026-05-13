@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eliasdetlefsen.portfolio_backend.exception.ProjectNotFoundException;
 
@@ -41,11 +42,25 @@ public class ProjectService {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
+    public void reorder(List<ReorderRequest> request) {
+        for (ReorderRequest r : request) {
+            Project project = projectRepository.findById(r.id())
+                    .orElseThrow(() -> new ProjectNotFoundException());
+
+            project.setDisplayOrder(r.displayOrder());
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
     public ProjectResponse update(UUID id, ProjectRequest request) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException());
 
-        project.update(request.displayOrder(), request.markdown(), request.imageUuid());
+        project.setDisplayOrder(request.displayOrder());
+        project.setMarkdown(request.markdown());
+        project.setImageUuid(request.imageUuid());
 
         return ProjectResponse.from(projectRepository.save(project));
     }
