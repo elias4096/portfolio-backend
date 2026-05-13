@@ -1,0 +1,1 @@
+ALTER TABLE projects ALTER COLUMN markdown TYPE VARCHAR(1000);
