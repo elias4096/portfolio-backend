@@ -16,6 +16,7 @@ The project requires the following environment variables:
 - PORTFOLIO_BACKEND_DB_URL
 - PORTFOLIO_BACKEND_DB_USER
 - PORTFOLIO_BACKEND_DB_PASSWORD
+- PORTFOLIO_BACKEND_JWT_SECRET
 
 ## Installing
 
