@@ -5,7 +5,6 @@ import java.util.UUID;
 import jakarta.validation.constraints.NotBlank;
 
 public record ProjectRequest(
-        @NotBlank Integer displayOrder,
-        @NotBlank String markdown,
-        @NotBlank UUID imageUuid) {
+                @NotBlank String markdown,
+                @NotBlank UUID imageUuid) {
 }

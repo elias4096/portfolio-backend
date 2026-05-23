@@ -34,7 +34,6 @@ public class ProjectService {
     @PreAuthorize("hasRole('ADMIN')")
     public ProjectResponse create(ProjectRequest request) {
         Project project = new Project(
-                request.displayOrder(),
                 request.markdown(),
                 request.imageUuid());
 
@@ -58,7 +57,6 @@ public class ProjectService {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException());
 
-        project.setDisplayOrder(request.displayOrder());
         project.setMarkdown(request.markdown());
         project.setImageUuid(request.imageUuid());
 

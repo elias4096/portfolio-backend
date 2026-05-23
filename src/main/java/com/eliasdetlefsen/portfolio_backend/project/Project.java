@@ -47,9 +47,9 @@ public class Project {
     protected Project() {
     }
 
-    public Project(Integer displayOrder, String markdown, UUID imageUuid) {
+    public Project(String markdown, UUID imageUuid) {
         this.id = UUID.randomUUID();
-        this.displayOrder = displayOrder;
+        this.displayOrder = 0;
         this.markdown = markdown;
         this.imageUuid = imageUuid;
     }
