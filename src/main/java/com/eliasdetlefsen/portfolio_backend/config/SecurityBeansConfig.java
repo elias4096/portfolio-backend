@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
 import com.eliasdetlefsen.portfolio_backend.auth.AuthenticationFilter;
 import com.eliasdetlefsen.portfolio_backend.auth.JwtService;
@@ -25,11 +27,18 @@ public class SecurityBeansConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        var repository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        var handler = new CsrfTokenRequestAttributeHandler();
+        handler.setCsrfRequestAttributeName(null);
+
+        http.csrf(csrf -> csrf
+                .csrfTokenRepository(repository)
+                .csrfTokenRequestHandler(handler))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/api/projects", "/api/images/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/auth/csrf", "/api/projects", "/api/images/**")
+                        .permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new AuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
